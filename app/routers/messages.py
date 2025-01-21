@@ -39,7 +39,7 @@ def remove_message_by_id(message_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("/", response_model=List[Message])
-def fetch_messages(
+def fetch_all_messages(
     recipient: Optional[str] = None,
     start: int = 0,
     stop: Optional[int] = None,

@@ -1,3 +1,5 @@
 .idea
 .venv/
 .env.current
+__pycache__/
+*.py[cod]

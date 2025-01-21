@@ -5,7 +5,6 @@ from app.crud.messages_crud import (
     create_message,
     get_unread_messages,
     mark_messages_as_read_by_recipient,
-    delete_message,
     delete_messages_by_ids,
     delete_messages_by_recipients,
     delete_messages_by_ids_and_recipients,
@@ -37,7 +36,8 @@ def fetch_unread_messages_service(
             status_code=400, detail="Recipient ID must be a string or None"
         )
     unread_messages = get_unread_messages(db, recipient)
-    mark_messages_as_read_by_recipient(db, recipient)
+    if len(unread_messages):
+        mark_messages_as_read_by_recipient(db, recipient)
     return unread_messages
 
 
@@ -50,11 +50,9 @@ def delete_message_service(message_id: int, db: Session):
             status_code=400, detail="Message ID must be a positive integer"
         )
 
-    deleted_message = delete_message(db, message_id)
-    return {
-        "message": "Message deleted successfully",
-        "deleted_message": deleted_message,
-    }
+    message_id_list = [message_id]
+
+    return delete_messages_by_ids(db, message_id_list)
 
 
 def delete_multiple_messages_service(request: DeleteMessagesRequest, db: Session):
@@ -99,11 +97,14 @@ def fetch_messages_service(
     if stop is not None:
         if stop > 0 and stop < start:
             raise HTTPException(
-                status_code=400, detail="Stop index can't be greater than stop index"
+                status_code=400, detail="Stop index can't be less than start index"
             )
         elif stop < 0:
             raise HTTPException(
                 status_code=400, detail="Stop index should be 0 or greater"
             )
 
-    return get_messages(db, recipient, start, stop)
+    messages = get_messages(db, recipient, start, stop)
+    if len(messages) > 0:
+        mark_messages_as_read_by_recipient(db, recipient)
+    return messages

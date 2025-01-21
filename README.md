@@ -12,7 +12,7 @@ This project provides a backend service for managing messages, including sending
 
 ## API Routes
 
-It is recommended to test the API endpoints using the Swagger by navigating to `/docs` after running the app locally.
+Can be tested using curl or postman but it is recommended to test the API endpoints using Swagger by navigating to `/docs` after running the app locally. 
 
 By default, the application runs at **[http://127.0.0.1:8000](http://127.0.0.1:8000)**.
 
@@ -27,9 +27,9 @@ There is one endpoint corresponding to each functional requirement specified in 
   "recipient": "test@gmail.com",
   "content": "Hello, this is a test message"
 }```
-2. **GET /messages/unread** – Fetch unread messages for a specific recipient if recipient is provided as a query parameter otherwise returns unread messages for all recipients.
+2. **GET /messages/unread** – Fetch unread messages for a specific recipient if recipient is provided as a query parameter otherwise returns unread messages for all recipients. (marks fetched messages as read)
 3. **DELETE /messages/{message_id}** – Remove a specific message by its ID. `ID` (*int*) is passed as path parameter.
-4. **DELETE /messages/batch** – Remove multiple messages by providing message IDs and/or recipients. Request body consists of json in the following format where you can add ids or recipients.
+4. **DELETE /messages/batch** – Remove multiple messages by providing message IDs and/or recipients. Request body consists of json in the following format where you can add ids or recipients. (supports partial deletion)
 
    **Sample Request Body:** ```
 {
@@ -40,7 +40,7 @@ There is one endpoint corresponding to each functional requirement specified in 
     "test@gmail.com", "anothertest@gmail.com"
   ]
 }```
-5. **GET /messages/** – Fetch all messages with optional pagination. `recipient` (*string*), `start` (*int*), `stop` (*int*) are provided as query parameters.
+5. **GET /messages/** – Fetch all messages with optional pagination. `recipient` (*string*), `start` (*int*), `stop` (*int*) are provided as query parameters. (marks fetched messages as read)
 
 ## Steps to Run the Project Locally
 

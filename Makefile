@@ -1,6 +1,6 @@
 # Variables
-UVICORN_CMD=uvicorn app.main:app --reload
-PYTHON_CMD=python
+UVICORN_CMD= .venv/bin/uvicorn app.main:app --reload
+PYTHON_CMD= .venv/bin/python
 DOTENV_CMD=dotenv
 
 # Commands
@@ -20,3 +20,4 @@ clean-env:
 	@rm -f .env.current
 
 .PHONY: run-local run-dev check_db_connection install test lint migrate clean-env
+
