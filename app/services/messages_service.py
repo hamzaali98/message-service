@@ -95,13 +95,14 @@ def fetch_messages_service(
         )
 
     if stop is not None:
-        if stop > 0 and stop < start:
+        if stop > 0 and stop <= start:
             raise HTTPException(
-                status_code=400, detail="Stop index can't be less than start index"
+                status_code=400,
+                detail="Stop index can't be less than or equal to start index",
             )
-        elif stop < 0:
+        elif stop <= 0:
             raise HTTPException(
-                status_code=400, detail="Stop index should be 0 or greater"
+                status_code=400, detail="Stop index should be greater than 0"
             )
 
     messages = get_messages(db, recipient, start, stop)
